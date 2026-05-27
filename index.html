@@ -691,89 +691,23 @@
             margin-bottom: 10px;
         }
 
-        /* Project Decryption Effect */
-        .project-preview-container {
+        .timeline-item:hover .school-preview {
             margin-top: 15px;
-            position: relative;
-            width: 100%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #000;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            cursor: pointer;
-        }
-
-        .project-preview-container.active {
-            height: 500px;
+            height: 500px; /* Taller for project screenshots */
+            max-width: 800px; 
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 1;
             border-color: var(--primary-color);
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-
-        .unlock-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #020617 100%);
-            z-index: 10;
-            transition: opacity 0.5s;
-        }
-
-        .project-preview-container.revealed .unlock-overlay {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .lock-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            animation: pulse-ring 2s infinite;
-        }
-
-        .unlock-text {
-            color: var(--text-primary);
-            font-family: monospace;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .decrypt-btn {
-            margin-top: 20px;
-            padding: 8px 20px;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            font-family: monospace;
-            font-size: 0.75rem;
-            background: transparent;
-            transition: all 0.3s;
-            pointer-events: none; /* Let the container handle click */
-        }
-
-        .project-preview-container:hover .decrypt-btn {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-
-        /* Override the old hover behavior for projects */
-        .timeline-item:hover .school-preview {
-            display: none; /* We use the new container instead */
+            margin-bottom: 10px;
         }
 
         .school-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center; /* Default */
+            object-position: center;
             filter: saturate(0.8) brightness(0.8);
             transition: filter 0.3s;
         }
@@ -1207,11 +1141,6 @@
                     </div>
                     <!-- Click to Reveal Container -->
                     <div class="project-preview-container" onclick="revealProject(this)">
-                        <div class="unlock-overlay">
-                            <i class="fas fa-lock lock-icon"></i>
-                            <div class="unlock-text">SECURE PROJECT DATA</div>
-                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
-                        </div>
                         <div class="school-preview">
                             <div class="scan-line"></div>
                             <img src="https://en.fastboy.com/wp-content/uploads/2023/12/Go-Check-In.jpg" alt="Go Check-in Project">
@@ -1249,11 +1178,6 @@
                     </div>
                     <!-- Click to Reveal Container -->
                     <div class="project-preview-container" onclick="revealProject(this)">
-                        <div class="unlock-overlay">
-                            <i class="fas fa-shield-alt lock-icon"></i>
-                            <div class="unlock-text">ENCRYPTED MESSAGING DATA</div>
-                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
-                        </div>
                         <div class="school-preview">
                             <div class="scan-line"></div>
                             <img src="https://pub-18e46a88085147c0a4aff1314f0abce9.r2.dev/news/1/1eIIVoKpD8raCF8E8HrrH3Ia2-6BYvMw.png" alt="GoChat Project" class="top-focus">
@@ -1291,11 +1215,6 @@
                     </div>
                     <!-- Click to Reveal Container -->
                     <div class="project-preview-container" onclick="revealProject(this)">
-                        <div class="unlock-overlay">
-                            <i class="fas fa-broadcast-tower lock-icon"></i>
-                            <div class="unlock-text">REMOTE ADVERTISING STREAM</div>
-                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
-                        </div>
                         <div class="school-preview">
                             <div class="scan-line"></div>
                             <img src="https://www.spectrio.com/wp-content/uploads/2021/12/Digital-signage-directory-template.jpg" alt="Smart Ad Project">
@@ -1334,11 +1253,6 @@
                     </div>
                     <!-- Click to Reveal Container -->
                     <div class="project-preview-container" onclick="revealProject(this)">
-                        <div class="unlock-overlay">
-                            <i class="fas fa-mobile-alt lock-icon"></i>
-                            <div class="unlock-text">MOBILE APP ECOSYSTEM DATA</div>
-                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
-                        </div>
                         <div class="school-preview">
                             <div class="scan-line"></div>
                             <img src="https://i.ytimg.com/vi/gxaFdliTc10/hqdefault.jpg?v=657a7665" alt="Nanoco Project">
