@@ -691,16 +691,82 @@
             margin-bottom: 10px;
         }
 
-        .timeline-item:hover .school-preview {
+        /* Project Decryption Effect */
+        .project-preview-container {
             margin-top: 15px;
-            height: 500px; /* Taller for project screenshots */
-            max-width: 800px; /* Wider for projects */
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 1;
+            position: relative;
+            width: 100%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #000;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            cursor: pointer;
+        }
+
+        .project-preview-container.active {
+            height: 500px;
             border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-            margin-bottom: 10px;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .unlock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #020617 100%);
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        .project-preview-container.revealed .unlock-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .lock-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            animation: pulse-ring 2s infinite;
+        }
+
+        .unlock-text {
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .decrypt-btn {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-family: monospace;
+            font-size: 0.75rem;
+            background: transparent;
+            transition: all 0.3s;
+            pointer-events: none; /* Let the container handle click */
+        }
+
+        .project-preview-container:hover .decrypt-btn {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        /* Override the old hover behavior for projects */
+        .timeline-item:hover .school-preview {
+            display: none; /* We use the new container instead */
         }
 
         .school-preview img {
@@ -910,7 +976,7 @@
         <div class="status-container">
             <span id="status-text"></span><span id="status-cursor" class="cursor" style="display:none">|</span>
         </div>
-        <div id="loading-bar-container" style="display:none">
+        <div id="loading-bar-container" style="display:none;">
             <div class="loading-bar-text">INITIALIZING SYSTEM...</div>
             <div class="loading-bar-border">
                 <div id="loading-bar-fill"></div>
@@ -1139,15 +1205,23 @@
                         <div class="project-name">Project: Go Check-in</div>
                         <div class="project-desc">Online appointment booking system for service providers</div>
                     </div>
-                    <!-- Company Logo Preview -->
-                    <div class="school-preview">
-                        <div class="scan-line"></div>
-                        <img src="https://en.fastboy.com/wp-content/uploads/2023/12/Go-Check-In.jpg" alt="Smart Digitech Office">
+                    <!-- Click to Reveal Container -->
+                    <div class="project-preview-container" onclick="revealProject(this)">
+                        <div class="unlock-overlay">
+                            <i class="fas fa-lock lock-icon"></i>
+                            <div class="unlock-text">SECURE PROJECT DATA</div>
+                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
+                        </div>
+                        <div class="school-preview">
+                            <div class="scan-line"></div>
+                            <img src="https://en.fastboy.com/wp-content/uploads/2023/12/Go-Check-In.jpg" alt="Go Check-in Project">
+                        </div>
                     </div>
                     <div class="meta-info">
                         <div><strong>Role:</strong> Core Backend Developer</div>
                         <div><strong>Team Size:</strong> 7 Members</div>
                     </div>
+                    <!-- ... task list ... -->
                     <ul class="task-list">
                         <li>Maintain and develop RESTful APIs using Yii2 supporting 1000+ concurrent users</li>
                         <li>Implement MQTT-based real-time notification system and SMS delivery via Plivo</li>
@@ -1173,10 +1247,17 @@
                         <div class="project-name">Project: GoChat</div>
                         <div class="project-desc">High-performance real-time messaging platform</div>
                     </div>
-                    <!-- Company Logo Preview -->
-                    <div class="school-preview">
-                        <div class="scan-line"></div>
-                        <img src="https://pub-18e46a88085147c0a4aff1314f0abce9.r2.dev/news/1/1eIIVoKpD8raCF8E8HrrH3Ia2-6BYvMw.png" alt="GoChat Tech Team" class="top-focus">
+                    <!-- Click to Reveal Container -->
+                    <div class="project-preview-container" onclick="revealProject(this)">
+                        <div class="unlock-overlay">
+                            <i class="fas fa-shield-alt lock-icon"></i>
+                            <div class="unlock-text">ENCRYPTED MESSAGING DATA</div>
+                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
+                        </div>
+                        <div class="school-preview">
+                            <div class="scan-line"></div>
+                            <img src="https://pub-18e46a88085147c0a4aff1314f0abce9.r2.dev/news/1/1eIIVoKpD8raCF8E8HrrH3Ia2-6BYvMw.png" alt="GoChat Project" class="top-focus">
+                        </div>
                     </div>
 
                     <div class="meta-info">
@@ -1208,10 +1289,17 @@
                         <div class="project-name">Smart Digital Advertisement</div>
                         <div class="project-desc">Cloud-based digital signage solution for retail locations</div>
                     </div>
-                    <!-- Company Logo Preview -->
-                    <div class="school-preview">
-                        <div class="scan-line"></div>
-                        <img src="https://www.spectrio.com/wp-content/uploads/2021/12/Digital-signage-directory-template.jpg" alt="Digital Signage Tech">
+                    <!-- Click to Reveal Container -->
+                    <div class="project-preview-container" onclick="revealProject(this)">
+                        <div class="unlock-overlay">
+                            <i class="fas fa-broadcast-tower lock-icon"></i>
+                            <div class="unlock-text">REMOTE ADVERTISING STREAM</div>
+                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
+                        </div>
+                        <div class="school-preview">
+                            <div class="scan-line"></div>
+                            <img src="https://www.spectrio.com/wp-content/uploads/2021/12/Digital-signage-directory-template.jpg" alt="Smart Ad Project">
+                        </div>
                     </div>
                     <div class="meta-info">
                         <div><strong>Role:</strong> Backend Developer</div>
@@ -1244,10 +1332,17 @@
                         <div class="project-name">Nanoco ProClub Mobile App</div>
                         <div class="project-desc">Customer care ecosystem with points accumulation</div>
                     </div>
-                    <!-- Company Logo Preview -->
-                    <div class="school-preview">
-                        <div class="scan-line"></div>
-                        <img src="https://i.ytimg.com/vi/gxaFdliTc10/hqdefault.jpg?v=657a7665" alt="Nanoco Group Project">
+                    <!-- Click to Reveal Container -->
+                    <div class="project-preview-container" onclick="revealProject(this)">
+                        <div class="unlock-overlay">
+                            <i class="fas fa-mobile-alt lock-icon"></i>
+                            <div class="unlock-text">MOBILE APP ECOSYSTEM DATA</div>
+                            <button class="decrypt-btn">DECRYPT PREVIEW</button>
+                        </div>
+                        <div class="school-preview">
+                            <div class="scan-line"></div>
+                            <img src="https://i.ytimg.com/vi/gxaFdliTc10/hqdefault.jpg?v=657a7665" alt="Nanoco Project">
+                        </div>
                     </div>
                     <div class="meta-info">
                         <div><strong>Role:</strong> Backend Developer</div>
@@ -1319,7 +1414,7 @@
                     <div class="cert-meta">Anthropic | Feb 2026</div>
                     <div class="school-preview">
                         <div class="scan-line"></div>
-                        <img src="https://cc.sj-cdn.net/certificate/3n2veylcj0hl/certificate-hcwaxbud492h-1770287366.jpg?Expires=1779805407&Signature=YxMMQhUp5O3tw0JUWINjg-etThWK2bpVdBUBlbyr9lSQ-~8UocEA9wy7u3uiAZNcxDeR7woZFBBdH7~U4fN-Swn030H2zbJWLFUQ-xJQkSFRG380DQ47xoR7a7JhVxVxmcuWd-1famt8SZNiAXAit5Y63oDdm0MKE~CDNwCwjB6v5X-eiyi29wZ3Y7MzobapmtkAi~843WtC-Za9tKPGDwJ5bMlPWPcrnL4DpKOmcZ15i2uwKrGDwxJpUIsktUc0yMvEbpoaNskt3hj07sThGsWQe6R2ml0Btbha7d3nP4esIUwTu-5iTjIjw5spQHlx8sctYFTB0-NF6Kv2jbL3CA__&Key-Pair-Id=APKAI3B7HFD2VYJQK4MQ" alt="Anthropic AI">
+                        <img src="https://pub-d078cd6b89754f0d87f1d10b8a7a844a.r2.dev/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202026-05-27%20lu%CC%81c%2012.42.00.png" alt="Anthropic AI">
                     </div>
                 </div>
                 <div class="cert-card reveal">
@@ -1327,7 +1422,7 @@
                     <div class="cert-meta">HiveMQ | Sep 2025</div>
                     <div class="school-preview">
                         <div class="scan-line"></div>
-                        <img src="https://cc.sj-cdn.net/certificate/2fwnucnff7pjs/certificate-d654stbdnzyq-1757324507.jpg?Expires=1779805579&Signature=bJUgyhR0dW-iyqG3sqjTv87tWfulpVDMrTiqobqh~64nrNoA6QJFFANr9YrFbVhSbsLgQmn~iQFgAPVnyhz06-Sycu3rmGHD5saRwA95~J9i7uQF4eexcnzHJL2zZiGGFLcRurgWdod6T02HWd8KPYdQORqCMcFFX80veHxdfCGQHfNQtFG4FBo3wBRpQCDcRWsa4dq6BWj2LA3C9LL401jdNzXZlLG5gXIvDnkyA6r-DYn-uOCaw1gziG2FANg9gzcVaO3iNxf7fmXgfAf5PZySTlwkK6g6jOB3AMUYvhHicj3tOQHejNZOu2QcDkF-feux3558vQWEqchoFMGdCA__&Key-Pair-Id=APKAI3B7HFD2VYJQK4MQ" alt="IoT Networking">
+                        <img src="https://pub-d078cd6b89754f0d87f1d10b8a7a844a.r2.dev/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202026-05-27%20lu%CC%81c%2012.35.54.png" alt="IoT Networking">
                     </div>
                 </div>
                 <div class="cert-card reveal">
@@ -1335,7 +1430,23 @@
                     <div class="cert-meta">AWS | Sep 2023</div>
                     <div class="school-preview">
                         <div class="scan-line"></div>
-                        <img src="	https://images.credly.com/size/340x340/images/fcafd0c9-42da-4703-a191-0c397203dc1b/blob" alt="AWS Cloud Architecture">
+                        <img src="https://pub-d078cd6b89754f0d87f1d10b8a7a844a.r2.dev/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202026-05-27%20lu%CC%81c%2012.44.29.png" alt="AWS Cloud Architecture">
+                    </div>
+                </div>
+                <div class="cert-card reveal">
+                    <div class="cert-title">Udemy Devops AWS Certificate</div>
+                    <div class="cert-meta">Udemy | Sep 2024</div>
+                    <div class="school-preview">
+                        <div class="scan-line"></div>
+                        <img src="https://pub-d078cd6b89754f0d87f1d10b8a7a844a.r2.dev/Udemy-aws.jpg" alt="AWS Cloud Architecture">
+                    </div>
+                </div>
+                <div class="cert-card reveal">
+                    <div class="cert-title">Udemy Yii2 Certificate</div>
+                    <div class="cert-meta">Udemy | Jul 2024</div>
+                    <div class="school-preview">
+                        <div class="scan-line"></div>
+                        <img src="https://pub-d078cd6b89754f0d87f1d10b8a7a844a.r2.dev/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202026-05-27%20lu%CC%81c%2012.39.09.png" alt="AWS Cloud Architecture">
                     </div>
                 </div>
             </div>
@@ -1454,6 +1565,24 @@
 
         setTimeout(() => pulse.remove(), 600);
     });
+
+    window.bootCV = () => { splashScreen.classList.add("hidden"); handleScroll(); };
+    window.showProgress = (t) => { document.getElementById("progress-msg").textContent = `> ${t}: ĐANG TRONG QUÁ TRÌNH LÀM :))`; };
+
+    window.revealProject = function(container) {
+        if (!container.classList.contains('revealed')) {
+            container.classList.add('revealed');
+            // Play a small pulse effect on click
+            const pulse = document.createElement("div");
+            pulse.className = "click-pulse";
+            pulse.style.left = "50%";
+            pulse.style.top = "50%";
+            pulse.style.width = "100px";
+            pulse.style.height = "100px";
+            container.appendChild(pulse);
+            setTimeout(() => pulse.remove(), 600);
+        }
+    };
 
     // Scroll Reveal & Effects Logic
     const scrollProgress = document.getElementById("scroll-progress");
