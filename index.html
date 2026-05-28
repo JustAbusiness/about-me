@@ -765,8 +765,8 @@
             font-size: 0.8rem;
         }
 
-        /* Floating Contact Button */
-        .floating-contact {
+        /* Floating Music & Contact Buttons */
+        .floating-controls {
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -777,7 +777,7 @@
             align-items: flex-end;
         }
 
-        .contact-btn {
+        .control-btn {
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -790,18 +790,20 @@
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
+            border: none;
+            cursor: pointer;
         }
 
-        .contact-btn i {
+        .control-btn i {
             font-size: 1.5rem;
         }
 
-        .contact-btn:hover {
+        .control-btn:hover {
             transform: scale(1.1) translateY(-5px);
             box-shadow: 0 15px 30px rgba(59, 130, 246, 0.6);
         }
 
-        .contact-btn::before {
+        .control-btn::before {
             content: '';
             position: absolute;
             width: 100%;
@@ -812,12 +814,12 @@
             animation: pulse-ring 2s infinite;
         }
 
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 0.8; }
-            100% { transform: scale(1.5); opacity: 0; }
+        .music-btn.muted::before {
+            animation: none;
+            opacity: 0.3;
         }
 
-        .contact-label {
+        .control-label {
             position: absolute;
             right: 80px;
             background: var(--surface-lighter);
@@ -833,9 +835,14 @@
             pointer-events: none;
         }
 
-        .contact-btn:hover .contact-label {
+        .control-btn:hover .control-label {
             opacity: 1;
             transform: translateX(0);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
 
         @media (max-width: 900px) {
@@ -1368,15 +1375,75 @@
     </main>
 </div>
 
-<!-- Floating Contact -->
-<div class="floating-contact">
-    <a href="https://www.facebook.com/dejavu354321/" target="_blank" class="contact-btn">
-        <span class="contact-label">Contact Huy via Facebook</span>
+<!-- Background Music -->
+<audio id="bg-music" loop preload="auto">
+    <source src="LONOWN_riserayss_-_worry_Best_part_Slowed_(SkySound.cc).mp3" type="audio/mpeg">
+</audio>
+
+<!-- Floating Controls -->
+<div class="floating-controls">
+    <button id="music-toggle" class="control-btn music-btn muted">
+        <span class="control-label">Bật nhạc nền Chill</span>
+        <i id="music-icon" class="fas fa-volume-mute"></i>
+    </button>
+    <a href="https://www.facebook.com/dejavu354321/" target="_blank" class="control-btn">
+        <span class="control-label">Contact Huy via Facebook</span>
         <i class="fab fa-facebook-messenger"></i>
     </a>
 </div>
 
 <script>
+    // Music Control Logic
+    const bgMusic = document.getElementById("bg-music");
+    const musicToggle = document.getElementById("music-toggle");
+    const musicIcon = document.getElementById("music-icon");
+    const musicLabel = musicToggle.querySelector(".control-label");
+    let isMusicPlaying = false;
+
+    bgMusic.volume = 0.1;
+
+    function playMusic() {
+        bgMusic.play().then(() => {
+            musicIcon.className = "fas fa-volume-up";
+            musicToggle.classList.remove("muted");
+            musicLabel.textContent = "Tắt nhạc nền";
+            isMusicPlaying = true;
+        }).catch(err => {
+            console.error("Playback failed:", err);
+            musicIcon.className = "fas fa-play";
+            musicLabel.textContent = "Click để Bật Nhạc";
+        });
+    }
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            musicIcon.className = "fas fa-volume-mute";
+            musicToggle.classList.add("muted");
+            musicLabel.textContent = "Bật nhạc nền Chill";
+            isMusicPlaying = false;
+        } else {
+            playMusic();
+        }
+    }
+
+    musicToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleMusic();
+    });
+
+    // Cố gắng phát nhạc khi có bất kỳ tương tác nào
+    const forceStart = () => {
+        if (!isMusicPlaying) playMusic();
+        ["click", "scroll", "touchstart", "keydown"].forEach(ev => 
+            document.removeEventListener(ev, forceStart)
+        );
+    };
+
+    ["click", "scroll", "touchstart", "keydown"].forEach(ev => 
+        document.addEventListener(ev, forceStart, { once: true })
+    );
+
     // Initialize Lucide icons
     lucide.createIcons();
 
